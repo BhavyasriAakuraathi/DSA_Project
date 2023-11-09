@@ -1,65 +1,85 @@
-# Rat in a Maze
+# Typing Master
 
-## Problem Statement
+I am a slow typer, my max wpm (word per minute) is 109.
 
-There will be a maze of size nxn, with walls at random position with random shape. The source will be at the top left, and the destination will be at the bottom right.
-> Source and Destination Positions can be customized
+So let me break the record with machines.
 
-The task is to find the cheese which is at the destination from the source.
+I wrote web crawlers to type and break the record.
 
-**Priority**
+![thumbnail-icon](README.assets/thumbnail-icon.png)
 
-right -> down -> left -> up
+<img src="README.assets/monkey-type.gif" alt="monkey-type" />
 
-## Implementation
-**Language Used:**
-Python3
+### YouTube: https://youtu.be/3QJkQ7hzdRE
 
-**Data-Structure Used:**
-Stack(Linked list)
-> In this, stack is implemented using list(append and pop)
+# Instructions
 
-**Traversal Method:**
-Depth First Search(DFS)
+### Chrome Driver
 
-**Modules Used**
+The web crawler depends uses selenium python library which requires a browser driver, I used chrome driver.
+You can download the latest verison here: https://chromedriver.chromium.org/.
 
-* Time
+### Environment
 
-* Numpy
+I use Anaconda, this is my environment configuration: [environment.yml](./environment.yml)
 
-* Termcolor
+Run `conda env create -f environment.yml` to create a conda environment.
 
-* **Gui Modules**
+However, the main library used is `selenium`, you could also simply install `selenium`.
 
-    * Tkinter
+```bash
+conda install -c conda-forge selenium		# install with conda
+pip install selenium						# install with pip
+```
 
-    * Pillow
+### Jupyter Notebook
 
-## Setup
+Code are written in Jupyter Notebook, you can convert the notebook into pure python code, but remember to comment out the last line `browser.close()` if you want to see the result, or if you are running the notebook, don't run this line, otherwise browser closes and you will lose the result.
 
-Before running the file, see that you have installed all the packages
+## Monkey Type
 
-    sudo pip3 install -r requirements.txt
+[code](./monkey-type.ipynb)
 
-and
+https://monkey-type.com/
 
-    sudo apt install python3-tk
+### Usage
 
-## Demo
+There are 4 functions/methods, you can change the value of delay and method.
 
-**Found a Path**
+Each method is of different styles with different techniques.
 
-![Found a path](./just_a_demo-there_is_path.gif)
+`delay` is for making the program more natural and more like a human typer. Typing too fast could be judged as invalid.
 
-**No Path**
+**The fastest method: 3**
 
-![No path](just_a_demo-no_path.gif)
+**The most natural method: 4**
 
-## Miscellaneous
+#### Method 1: one_letter_at_a_time
 
-You can even change the colors of the maze; they are customizable
+Find all words from the DOM, for each word and for each letter, send the letters one by one to the browser.
 
-    ./colors.py
+But since all words are extracted at once and then entered, when words used up and loading more, the program needs some time to wait for loading and do the calculation, there are lags between each iteration.
 
-The above program, displays all the possible colors in tkinter.
+![letter-by-letter](README.assets/letter-by-letter.gif)
+
+#### Method 2: all_letters_at_a_time
+
+Similar to method 1.
+
+Find all words from the DOM, construct a long string, and enter the entire string at once. After each run, some new words would be loaded and some calculation needs to be performed, so there is some lag between each iteration.
+
+![all-letters](README.assets/all-letters.gif)
+
+#### Method 3: one_word_at_a_time
+
+This is the fastest method. Select the active word in every iteration and enter the entire word in each iteration.
+
+<img src="README.assets/monkey-type.gif" alt="monkey-type" />
+
+#### Method 4: one_word_letter_at_a_time
+
+Select the active word in every iteration and pop out each letter of the word, this is the most natural (human like) way.
+
+A `delay` of 0.02 was given to make the behavior more human-like, so that this run wasn't judged to be invalid.
+
+![natural](README.assets/natural.gif)
